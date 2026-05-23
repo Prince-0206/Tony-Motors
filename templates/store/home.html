@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <div class="row align-items-center" style="min-height: 600px;">
+            <div class="col-lg-7">
+                <div class="hero-badge mb-3">PERFORMANCE PARTS & ACCESSORIES</div>
+                <h1 class="hero-title">Unleash Your<br><span class="text-danger">Machine's</span><br>True Power</h1>
+                <p class="hero-subtitle mt-3">Premium sports car parts engineered for maximum performance. From track days to daily drives — Tony Motors has every component your car craves.</p>
+                <div class="mt-4 d-flex gap-3 flex-wrap">
+                    <a href="{% url 'products' %}" class="btn btn-primary-red btn-lg">
+                        <i class="bi bi-grid-fill me-2"></i>Shop All Parts
+                    </a>
+                    <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">
+                        Our Story
+                    </a>
+                </div>
+                <div class="hero-stats mt-5">
+                    <div class="stat-item">
+                        <span class="stat-number">5,000+</span>
+                        <span class="stat-label">Parts in Stock</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Car Models</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Happy Customers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Category Grid -->
+<section class="py-5 section-dark">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <span class="section-label">BROWSE BY TYPE</span>
+            <h2 class="section-title">Shop by Category</h2>
+        </div>
+        <div class="row g-3">
+            {% for category in categories %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="{% url 'products' %}?category={{ category.slug }}" class="category-card">
+                    <div class="category-icon">
+                        <i class="bi {{ category.icon }}"></i>
+                    </div>
+                    <div class="category-name">{{ category.name }}</div>
+                    <div class="category-count">
+                        {{ category.products.count }} item{{ category.products.count|pluralize }}
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted py-4">
+                <p>Categories coming soon. Check back shortly!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-header d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="section-label">HANDPICKED</span>
+                <h2 class="section-title mb-0">Featured Parts</h2>
+            </div>
+            <a href="{% url 'products' %}" class="btn btn-outline-danger">View All <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-sm-6 col-lg-3">
+                {% include 'store/partials/product_card.html' %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Value Props Banner -->
+<section class="value-banner py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="value-item">
+                    <i class="bi bi-shield-check-fill"></i>
+                    <h6>Genuine Parts</h6>
+                    <p>OEM & premium aftermarket, fully certified</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="value-item">
+                    <i class="bi bi-truck-fill"></i>
+                    <h6>Fast Shipping</h6>
+                    <p>Same-day dispatch on orders before 2 PM</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="value-item">
+                    <i class="bi bi-arrow-repeat"></i>
+                    <h6>Easy Returns</h6>
+                    <p>30-day hassle-free return policy</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="value-item">
+                    <i class="bi bi-headset"></i>
+                    <h6>Expert Help</h6>
+                    <p>Talk to a real mechanic, not a bot</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- New Arrivals -->
+{% if new_products %}
+<section class="py-5 section-dark">
+    <div class="container">
+        <div class="section-header d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="section-label">JUST LANDED</span>
+                <h2 class="section-title mb-0">New Arrivals</h2>
+            </div>
+            <a href="{% url 'products' %}" class="btn btn-outline-danger">See More <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="row g-4">
+            {% for product in new_products %}
+            <div class="col-sm-6 col-lg-3">
+                {% include 'store/partials/product_card.html' %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+    <div class="container text-center">
+        <h2 class="cta-title">Ready to Upgrade Your Ride?</h2>
+        <p class="cta-sub mt-2 mb-4">Browse our full catalog of 5,000+ sports car parts. Free shipping on orders over $150.</p>
+        <a href="{% url 'products' %}" class="btn btn-primary-red btn-lg me-3">
+            <i class="bi bi-grid-fill me-2"></i>Browse All Parts
+        </a>
+        <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg">
+            Get Expert Advice
+        </a>
+    </div>
+</section>
+
+{% endblock %}

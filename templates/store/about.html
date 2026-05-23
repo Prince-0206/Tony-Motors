@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | Tony Motors{% endblock %}
+
+{% block content %}
+<section class="about-hero py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="section-label">OUR STORY</span>
+                <h1 class="section-title mt-2">Built by Enthusiasts,<br>For Enthusiasts</h1>
+                <p class="text-muted mt-3 lead">Tony Motors was founded in 2008 by Tony Marchetti — a former racing mechanic with a single mission: give every car enthusiast access to the same performance parts used by professional racing teams.</p>
+                <p class="text-muted">From a small garage in Los Angeles, we've grown into one of the most trusted sports car parts suppliers in North America, stocking over 5,000 parts for Ferrari, Lamborghini, Porsche, McLaren, and more.</p>
+                <div class="mt-4">
+                    <a href="{% url 'products' %}" class="btn btn-primary-red me-3">Shop Now</a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-light">Contact Us</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-stats-grid">
+                    <div class="about-stat-card">
+                        <div class="about-stat-num">2008</div>
+                        <div class="about-stat-label">Founded</div>
+                    </div>
+                    <div class="about-stat-card">
+                        <div class="about-stat-num">5K+</div>
+                        <div class="about-stat-label">Parts in Stock</div>
+                    </div>
+                    <div class="about-stat-card">
+                        <div class="about-stat-num">15K+</div>
+                        <div class="about-stat-label">Happy Customers</div>
+                    </div>
+                    <div class="about-stat-card">
+                        <div class="about-stat-num">200+</div>
+                        <div class="about-stat-label">Car Models Supported</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 section-dark">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-label">WHAT WE STAND FOR</span>
+            <h2 class="section-title">Our Values</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="value-card">
+                    <i class="bi bi-trophy-fill text-danger fs-2 mb-3"></i>
+                    <h5>Performance First</h5>
+                    <p class="text-muted">Every part we stock is selected for maximum performance gain and reliability. We don't carry parts we wouldn't put on our own cars.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-card">
+                    <i class="bi bi-shield-fill-check text-danger fs-2 mb-3"></i>
+                    <h5>100% Authentic</h5>
+                    <p class="text-muted">We source directly from manufacturers and authorized distributors. Every part comes with full documentation and warranty.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-card">
+                    <i class="bi bi-people-fill text-danger fs-2 mb-3"></i>
+                    <h5>Expert Community</h5>
+                    <p class="text-muted">Our team includes former racing mechanics, professional tuners, and lifelong car enthusiasts who answer every question personally.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

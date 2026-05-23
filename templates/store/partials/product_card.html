@@ -1,0 +1,43 @@
+{% load static %}
+<div class="product-card h-100">
+    {% if product.is_new %}
+    <div class="product-badge new-badge">NEW</div>
+    {% elif product.sale_percentage %}
+    <div class="product-badge sale-badge">-{{ product.sale_percentage }}%</div>
+    {% endif %}
+
+    <a href="{% url 'product_detail' product.slug %}" class="product-image-link">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+        {% else %}
+        <div class="product-img-placeholder">
+            <i class="bi bi-gear-wide-connected"></i>
+        </div>
+        {% endif %}
+    </a>
+
+    <div class="product-info">
+        <div class="product-category-tag">{{ product.category.name }}</div>
+        <a href="{% url 'product_detail' product.slug %}" class="product-name-link">
+            <h6 class="product-name">{{ product.name }}</h6>
+        </a>
+        {% if product.brand %}
+        <div class="product-brand">{{ product.brand }}</div>
+        {% endif %}
+        <div class="product-price-row">
+            <div>
+                <span class="product-price">${{ product.active_price }}</span>
+                {% if product.discount_price %}
+                <span class="product-old-price">${{ product.price }}</span>
+                {% endif %}
+            </div>
+            <form action="{% url 'add_to_cart' product.pk %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-add-cart" title="Add to cart">
+                    <i class="bi bi-bag-plus-fill"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

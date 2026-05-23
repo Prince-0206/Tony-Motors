@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | Tony Motors{% endblock %}
+
+{% block content %}
+<div class="page-header-bar">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'products' %}?category={{ product.category.slug }}">{{ product.category.name }}</a></li>
+                <li class="breadcrumb-item active">{{ product.name|truncatechars:40 }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Product Image -->
+        <div class="col-lg-6">
+            <div class="product-detail-image">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded">
+                {% else %}
+                <div class="product-detail-placeholder">
+                    <i class="bi bi-gear-wide-connected"></i>
+                </div>
+                {% endif %}
+                {% if product.is_new %}
+                <div class="detail-badge new-badge">NEW ARRIVAL</div>
+                {% elif product.sale_percentage %}
+                <div class="detail-badge sale-badge">{{ product.sale_percentage }}% OFF</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-lg-6">
+            <div class="product-detail-info">
+                <div class="product-category-tag mb-2">{{ product.category.name }}</div>
+                <h1 class="product-detail-name">{{ product.name }}</h1>
+
+                {% if product.brand %}
+                <div class="detail-brand mb-3">By <strong>{{ product.brand }}</strong></div>
+                {% endif %}
+
+                <div class="detail-price-block mb-3">
+                    <span class="detail-price">${{ product.active_price }}</span>
+                    {% if product.discount_price %}
+                    <span class="detail-old-price ms-2">${{ product.price }}</span>
+                    <span class="badge bg-danger ms-2">Save {{ product.sale_percentage }}%</span>
+                    {% endif %}
+                </div>
+
+                <div class="detail-meta mb-4">
+                    <div class="d-flex gap-4">
+                        <div>
+                            <small class="text-muted">SKU</small>
+                            <div class="fw-semibold">{{ product.sku }}</div>
+                        </div>
+                        <div>
+                            <small class="text-muted">Availability</small>
+                            <div>
+                                {% if product.stock > 0 %}
+                                <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>In Stock ({{ product.stock }} left)</span>
+                                {% else %}
+                                <span class="text-danger fw-semibold"><i class="bi bi-x-circle-fill me-1"></i>Out of Stock</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if product.compatibility %}
+                    <div class="mt-2">
+                        <small class="text-muted">Compatible with:</small>
+                        <div class="text-warning-emphasis">{{ product.compatibility }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if product.stock > 0 %}
+                <form action="{% url 'add_to_cart' product.pk %}" method="post" class="add-to-cart-form mb-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="qty-control">
+                            <button type="button" class="qty-btn" onclick="adjustQty(-1)">−</button>
+                            <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ product.stock }}" class="qty-input">
+                            <button type="button" class="qty-btn" onclick="adjustQty(1)">+</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary-red btn-lg flex-grow-1">
+                            <i class="bi bi-bag-plus-fill me-2"></i>Add to Cart
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+
+                <div class="product-description">
+                    <h6 class="mb-2">Description</h6>
+                    <p class="text-muted">{{ product.description }}</p>
+                </div>
+
+                <div class="detail-assurance mt-4">
+                    <div class="d-flex gap-3">
+                        <div class="assurance-item"><i class="bi bi-shield-check text-danger"></i> Authentic</div>
+                        <div class="assurance-item"><i class="bi bi-truck text-danger"></i> Fast Shipping</div>
+                        <div class="assurance-item"><i class="bi bi-arrow-repeat text-danger"></i> Easy Returns</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="mt-5 pt-4">
+        <h4 class="section-title mb-4">Related Products</h4>
+        <div class="row g-4">
+            {% for product in related_products %}
+            <div class="col-sm-6 col-lg-3">
+                {% include 'store/partials/product_card.html' %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function adjustQty(delta) {
+    const input = document.getElementById('qty');
+    const max = parseInt(input.getAttribute('max'));
+    const newVal = Math.min(max, Math.max(1, parseInt(input.value) + delta));
+    input.value = newVal;
+}
+</script>
+{% endblock %}
